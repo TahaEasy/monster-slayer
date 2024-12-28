@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Basics</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="./vue.global.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>Monster Slayer</h1>
+    </header>
+    <div id="game">
+      <div class="boxes">
+        <div v-if="warning" class="box box-warning">
+          <h2>
+            Warning: <span class="message">{{ warning }}</span>
+            <span> ❗</span>
+          </h2>
+        </div>
+        <div
+          :class="['box', {'box-good': message[0] === 'good'}, {'box-bad': message[0] === 'bad'}]"
+        >
+          <h2>
+            Status: <span class="message">{{ message[1] }}</span>
+            <span v-if="message[0] === 'good'"> ✅</span><span v-else> ❌</span>
+          </h2>
+        </div>
+        <div class="box box-info">
+          <h2>Round: <span class="message">{{ roundCount }}</span></h2>
+        </div>
+      </div>
+      <section id="monster" class="container">
+        <h2 :class="nameAction('monster')" class="monster-title">
+          🧟‍♂️ Monster Health: {{ monsterHealth }}
+          <span
+            v-if="isMonsterAttacking"
+            class="monster-attacking-spinner"
+          ></span>
+        </h2>
+        <div class="healthbar">
+          <div class="healthbar__value" :style="monsterHealthBarValue"></div>
+        </div>
+      </section>
+      <section id="player" class="container">
+        <h2 :class="nameAction('player')">
+          🦹‍♂️ Your Health: {{ playerHealth }}
+        </h2>
+        <div class="healthbar">
+          <div class="healthbar__value" :style="playerHealthBarValue"></div>
+        </div>
+      </section>
+      <section v-if="winner" class="container">
+        <h2>Game Over!</h2>
+        <h3 v-if="winner == 'player'">You Won! 🎉</h3>
+        <h3 v-if="winner == 'monster'">You Lost! ☹</h3>
+        <button @click="newGame">New Game</button>
+      </section>
+      <section v-if="isAttackBar && !winner">
+        <div class="attack-bar">
+          <div
+            class="attack-indicator"
+            id="indicator"
+            :style="{left: indicator}"
+          ></div>
+        </div>
+        <div id="attack-controls">
+          <div>
+            <button
+              v-if="isAttacking"
+              @click="attackType == 'normal' ? playerAttack() : playerSpecialAttack()"
+              :disabled="isMonsterAttacking"
+              class="{disabled: isMonsterAttacking}"
+            >
+              FIRE! 🔥
+            </button>
+            <button
+              v-else
+              @click="startAttacking"
+              :disabled="isMonsterAttacking || playerStandby"
+              class="{disabled: isMonsterAttacking || playerStandby}"
+            >
+              START
+            </button>
+          </div>
+          <div v-if="!isAttacking">
+            <button
+              @click="hideAttackBar"
+              :disabled="isMonsterAttacking || playerStandby"
+              class="{disabled: isMonsterAttacking || playerStandby}"
+            >
+              BACK
+            </button>
+          </div>
+        </div>
+      </section>
+      <section v-if="!isAttackBar && !winner" id="controls">
+        <button
+          @click="showAttackBar('normal')"
+          :disabled="isMonsterAttacking || playerStandby"
+          class="{disabled: isMonsterAttacking || playerStandby}"
+        >
+          ATTACK
+        </button>
+        <button
+          @click="showAttackBar('special')"
+          :disabled="isMonsterAttacking || !canUseSpecialAttack || playerStandby"
+          class="{disabled: isMonsterAttacking || !canUseSpecialAttack || playerStandby}"
+        >
+          SPECIAL ATTACK
+        </button>
+        <button
+          @click="healPlayer"
+          :disabled="isMonsterAttacking || playerStandby"
+          class="{disabled: isMonsterAttacking || playerStandby}"
+        >
+          HEAL
+        </button>
+        <button
+          @click="surrender"
+          :disabled="isMonsterAttacking || playerStandby"
+          class="{disabled: isMonsterAttacking || playerStandby}"
+        >
+          SURRENDER
+        </button>
+      </section>
+      <section id="log" class="container">
+        <h2>Battle Log</h2>
+        <ul>
+          <li v-for="{who, what, value} in logs">
+            <span
+              :class="{'log--player': who == 'player', 'log--monster': who == 'monster'}"
+              >{{ who == "player" ? 'Player ' : 'Monster '}}</span
+            >
+            <span v-if="what == 'heal'">
+              healed himself: gained
+              <span class="log--heal">{{ value }} health</span></span
+            >
+            <span v-else-if="what == 'attack'"
+              >attacked: dealt
+              <span class="log--damage">{{ value }} damage</span></span
+            >
+            <span v-else-if="what == 'special-attack'"
+              >used <span class="log--special">special</span> attack: dealt
+              <span class="log--damage">{{ value }} damage</span></span
+            >
+          </li>
+        </ul>
+      </section>
+    </div>
+  </body>
+</html>

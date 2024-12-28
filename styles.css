@@ -1,0 +1,297 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: "Jost", sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+header {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  padding: 0.5rem;
+  background-color: #880017;
+  color: white;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+section {
+  width: 90%;
+  max-width: 40rem;
+  margin: auto;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes heal {
+  0% {
+    transform: translateY(0);
+    color: black;
+  }
+  50% {
+    transform: translateY(-3px);
+    color: #00a876;
+  }
+  100% {
+    transform: translateY(0);
+    color: black;
+  }
+}
+
+@keyframes hit {
+  0% {
+    transform: translateX(0);
+    color: black;
+  }
+  10% {
+    transform: translateX(-2%);
+    color: red;
+  }
+  20% {
+    transform: translateX(2%);
+    color: black;
+  }
+  30% {
+    transform: translateX(-2%);
+    color: red;
+  }
+  40% {
+    transform: translateX(2%);
+    color: black;
+  }
+  50% {
+    transform: translateX(-2%);
+    color: red;
+  }
+  60% {
+    transform: translateX(2%);
+    color: black;
+  }
+  70% {
+    transform: translateX(-2%);
+    color: red;
+  }
+  80% {
+    transform: translateX(2%);
+    color: black;
+  }
+  90% {
+    transform: translateX(-2%);
+    color: red;
+  }
+  100% {
+    transform: translateX(0);
+    color: black;
+  }
+}
+
+.healthbar {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #575757;
+  margin: 1rem 0;
+  background: #fde5e5;
+}
+
+.healthbar__value {
+  background-color: #00a876;
+  height: 100%;
+  transition: all 0.5s;
+}
+
+.container {
+  text-align: center;
+  padding: 0.5rem;
+  margin: 1rem auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  border-radius: 12px;
+}
+
+#monster h2,
+#player h2 {
+  margin: 0.25rem;
+}
+
+#controls {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+#attack-controls {
+  text-align: center;
+}
+
+button {
+  font: inherit;
+  border: 1px solid #88005b;
+  background-color: #88005b;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  margin: 1rem;
+  width: 12rem;
+  cursor: pointer;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.26);
+}
+
+.disabled {
+  pointer-events: none;
+  cursor: no-drop;
+}
+
+button:focus {
+  outline: none;
+}
+
+button:hover,
+button:active {
+  background-color: #af0a78;
+  border-color: #af0a78;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.26);
+}
+
+button:disabled {
+  background-color: #ccc;
+  border-color: #ccc;
+  box-shadow: none;
+  color: #3f3f3f;
+  cursor: not-allowed;
+}
+
+#log ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#log li {
+  margin: 0.5rem 0;
+}
+
+.log--player {
+  color: #7700ff;
+}
+
+.log--monster {
+  color: #da8d00;
+}
+
+.log--damage {
+  color: red;
+}
+
+.log--special {
+  color: #4a049b;
+}
+
+.log--heal {
+  color: green;
+}
+
+#attack-controls button {
+  margin: 0.2rem 0 !important;
+}
+
+.monster-title {
+  position: relative;
+}
+
+.monster-attacking-spinner {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  height: 24px;
+  width: 24px;
+  border-radius: 99rem;
+  border: 1px dashed black;
+  animation: spinner 1s;
+  animation-iteration-count: infinite;
+}
+
+.attack-bar {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  border: 1px solid #575757;
+  margin: 1rem 0;
+  background: linear-gradient(to right, red, yellow, green, yellow , red);
+}
+
+.attack-indicator {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transform: translateX(50%);
+  width: 2px;
+  background-color: white;
+}
+
+.boxes {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  width: max-content;
+}
+
+.box {
+  width: fit-content;
+  padding: 0.25rem 1rem;
+  border-width: 1px;
+  border-style: solid;
+
+  & h2 {
+    margin: 0;
+  }
+}
+
+.box-good {
+  background-color: #13cd32a9;
+  border-color: #13cd32;
+}
+
+.box-info {
+  background-color: #2ca5eba9;
+  border-color: #2ca5eb;
+}
+
+.box-bad {
+  background-color: #880017a9;
+  border-color: #880017;
+}
+
+.box-warning {
+  background-color: #f1b639a9;
+  border-color: #f1b639;
+}
+
+.message {
+  color: white;
+}
+
+.hit {
+  animation-name: hit;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+  transition: all 0.25s;
+}
+
+.heal {
+  animation-name: heal;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+  transition: all 0.25s;
+}
