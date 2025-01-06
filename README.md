@@ -2,6 +2,8 @@
 
 This is a very simple game made with vue.js
 
+preview: [Here](https://raw.githack.com/TahaEasy/monster-slayer/master/index.html)
+
 ## Game Controls
 
 Here's actually anything that you need to know about this game!
